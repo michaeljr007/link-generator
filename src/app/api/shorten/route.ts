@@ -20,9 +20,12 @@ export async function POST(req: Request) {
 
   // WhatsApp mode
   if (isWhatsApp && phone && message) {
-    const cleanedPhone = phone.replace(/\D/g, "");
+    const cleanedPhone = phone.replace(/[^\d+]/g, ""); // keep "+" if it's the first character
+    const normalizedPhone = cleanedPhone.startsWith("+")
+      ? cleanedPhone.slice(1) // remove the "+"
+      : cleanedPhone; // already numeric
     const encodedMsg = encodeURIComponent(message);
-    targetUrl = `https://wa.me/${cleanedPhone}?text=${encodedMsg}`;
+    targetUrl = `https://wa.me/${normalizedPhone}?text=${encodedMsg}`;
   }
 
   if (!targetUrl) {
