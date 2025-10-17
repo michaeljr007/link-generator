@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -9,14 +13,14 @@ module.exports = {
         secondary: "#9333EA",
         tertiary: "#64748B",
         dark: {
-          DEFAULT: "#0f0f0f", // Base background
-          surface: "#1a1a1a", // Main container background
-          elevated: "#262626", // Cards, divs, etc.
+          DEFAULT: "#0f0f0f",
+          surface: "#1a1a1a",
+          elevated: "#262626",
         },
         light: {
-          DEFAULT: "#f7f7f7", // Base background
-          surface: "#ffffff", // Main container background
-          elevated: "#e0e0e0", // Cards, divs, etc.
+          DEFAULT: "#f7f7f7",
+          surface: "#ffffff",
+          elevated: "#e0e0e0",
         },
       },
     },

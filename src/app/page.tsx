@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, Phone, MessageCircle, Scissors } from "lucide-react";
 
 export default function Home() {
   const [isWhatsApp, setIsWhatsApp] = useState(false);
@@ -22,61 +24,133 @@ export default function Home() {
   };
 
   return (
-    <main style={{ padding: "2rem", maxWidth: "500px", margin: "auto" }}>
-      <h1>Link Shortener</h1>
-
-      <label style={{ display: "block", marginBottom: "1rem" }}>
-        <input
-          type="checkbox"
-          checked={isWhatsApp}
-          onChange={(e) => setIsWhatsApp(e.target.checked)}
-        />{" "}
-        Generate WhatsApp link
-      </label>
-
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+    <main className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-dark-surface p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md bg-white dark:bg-dark-elevated rounded-2xl shadow-xl p-6"
       >
-        {!isWhatsApp && (
+        <h1 className="text-2xl font-bold text-red-800 dark:text-white mb-6 flex items-center gap-2">
+          <Scissors className="w-6 h-6" />
+          Link Shortener
+        </h1>
+
+        <label className="flex items-center gap-2 mb-6 cursor-pointer">
           <input
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="Paste a long URL"
-            required
+            type="checkbox"
+            checked={isWhatsApp}
+            onChange={(e) => setIsWhatsApp(e.target.checked)}
+            className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
           />
-        )}
+          <span className="text-gray-700 dark:text-gray-200 flex items-center gap-1">
+            <MessageCircle className="w-4 h-4" />
+            Generate WhatsApp link
+          </span>
+        </label>
 
-        {isWhatsApp && (
-          <>
-            <input
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="WhatsApp phone number"
-              required
-            />
-            <input
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Default message"
-              required
-            />
-          </>
-        )}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <AnimatePresence mode="wait">
+            {!isWhatsApp ? (
+              <motion.div
+                key="url-input"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="relative">
+                  <Link className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder="Paste a long URL"
+                    required
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="whatsapp-inputs"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-4"
+              >
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="WhatsApp phone number"
+                    required
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div className="relative">
+                  <MessageCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Default message"
+                    required
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        <button type="submit">Generate & Shorten</button>
-      </form>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+          >
+            <Scissors className="w-5 h-5" />
+            Generate & Shorten
+          </motion.button>
+        </form>
 
-      {original && (
-        <p style={{ marginTop: "1rem" }}>
-          Original: <a href={original}>{original}</a>
-        </p>
-      )}
-      {shortLink && (
-        <p>
-          Shortened: <a href={shortLink}>{shortLink}</a>
-        </p>
-      )}
+        <AnimatePresence>
+          {original && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6 text-gray-700 dark:text-gray-200"
+            >
+              Original:{" "}
+              <a
+                href={original}
+                className="text-blue-600 dark:text-blue-400 hover:underline break-all"
+              >
+                {original}
+              </a>
+            </motion.p>
+          )}
+          {shortLink && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3 }}
+              className="mt-2 text-gray-700 dark:text-gray-200"
+            >
+              Shortened:{" "}
+              <a
+                href={shortLink}
+                className="text-blue-600 dark:text-blue-400 hover:underline break-all"
+              >
+                {shortLink}
+              </a>
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </main>
   );
 }
