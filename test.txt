@@ -1,0 +1,2 @@
+make this component more beautiful, modern, industry level standard, and responsive. Add icons from lucid and animations from framer motion when necessary. style with dark mode using dark:bg-dark-surface and dark:bg-dark-elevated. 
+MAINTAIN ALL IMPORTS AND CURRENT FUNCTIONALITY
